@@ -1,0 +1,23 @@
+{
+  "code": "P1000",
+  "meta": {
+    "modelName": "User",
+    "driverAdapterError": {
+      "name": "DriverAdapterError",
+      "cause": {
+        "originalCode": "28P01",
+        "originalMessage": "password authentication failed for user \"postgres\"",
+        "kind": "AuthenticationFailed",
+        "user": "postgres"
+      }
+    }
+  },
+  "clientVersion": "7.6.0",
+  "name": "PrismaClientKnownRequestError"
+}
+
+Invalid `prisma.user.count()` invocation:
+
+
+Authentication failed against the database server, the provided database credentials for `postgres` are not valid
+P1000

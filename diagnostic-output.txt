@@ -1,0 +1,14 @@
+{
+  "code": "ECONNREFUSED",
+  "meta": {
+    "modelName": "User"
+  },
+  "clientVersion": "7.6.0",
+  "name": "PrismaClientKnownRequestError"
+}
+
+Invalid `prisma.user.count()` invocation:
+
+
+
+ECONNREFUSED
