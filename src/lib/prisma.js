@@ -1,14 +1,20 @@
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
+// Custom path එකෙන් Prisma Client එක import කරනවා
 import pkg from '@prisma/client';
 import 'dotenv/config';
 
 const { PrismaClient } = pkg;
 
-const connectionString = process.env.DATABASE_URL;
+// Heroku DATABASE_URL එකට SSL mode එක නැත්නම් ඒක add කරගන්නවා
+let connectionString = process.env.DATABASE_URL;
 
-// Heroku Postgres connection eka SSL nathiwa reject karana nisa, 
-// ssl object eka rejectUnauthorized: false widiyata danna ona.
+if (connectionString && !connectionString.includes('sslmode')) {
+    connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslmode=no-verify';
+}
+
+// Heroku Postgres connection එක SSL නැතිව reject කරන නිසා, 
+// ssl object එක rejectUnauthorized: false විදියට දාන්න ඕනේ.
 const pool = new Pool({ 
     connectionString,
     ssl: {
