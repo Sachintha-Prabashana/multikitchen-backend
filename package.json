@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "prisma:generate": "pnpm prisma generate",
-    "build": "pnpm prisma generate && tsc && xcopy /E /I /Y node_modules\\.prisma dist\\node_modules\\.prisma",
+    "build": "pnpm prisma generate && tsc",
     "start": "node dist/index.js",
     "heroku-postbuild": "pnpm run build",
     "prisma:migrate": "pnpm prisma migrate dev",
