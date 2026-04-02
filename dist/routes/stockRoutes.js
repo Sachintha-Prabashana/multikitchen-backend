@@ -1,0 +1,11 @@
+import express from 'express';
+import { issue, receive, getHistory, getLowStock, batchIssue, batchReceive } from '../controllers/stockController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
+const router = express.Router();
+router.post('/issue', authMiddleware, issue);
+router.post('/issue/batch', authMiddleware, batchIssue);
+router.post('/receive', authMiddleware, receive);
+router.post('/receive/batch', authMiddleware, batchReceive);
+router.get('/history', authMiddleware, getHistory);
+router.get('/low', authMiddleware, getLowStock);
+export default router;
