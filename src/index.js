@@ -20,7 +20,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// CORS Settings - Vercel frontend URL eka allow karanna
+app.use(cors({
+  origin: [
+    "https://multikitchen-frontend.vercel.app", // Oyaage Vercel Live URL eka
+    "http://localhost:3000"                  // Local dev waladi use karanna
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
@@ -42,7 +50,7 @@ app.get('/', (req, res) => {
 // Error Handling Middleware
 app.use(errorMiddleware);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
