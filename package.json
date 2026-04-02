@@ -4,6 +4,10 @@
   "type": "module",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "22.x",
+    "pnpm": "10.x"
+  },
   "scripts": {
     "dev": "nodemon src/index.js",
     "prisma:generate": "pnpm prisma generate",
@@ -13,6 +17,12 @@
     "prisma:migrate": "pnpm prisma migrate dev",
     "prisma:studio": "pnpm prisma studio",
     "seed": "pnpm prisma db seed"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "prisma",
+      "@prisma/client"
+    ]
   },
   "prisma": {
     "seed": "node prisma/seed.js"
