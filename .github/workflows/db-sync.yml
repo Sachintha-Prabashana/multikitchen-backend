@@ -1,0 +1,26 @@
+name: Nightly Database Sync (Heroku to Supabase)
+
+on:
+  schedule:
+    # Runs at 12:00 AM Sri Lanka Time (UTC 18:30) every day
+    - cron: '30 18 * * *'
+  workflow_dispatch: # Allows manual triggering of the sync from the GitHub Actions tab
+
+jobs:
+  sync-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Syncing Data...
+        env:
+          HEROKU_URL: ${{ secrets.HEROKU_DATABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
+        run: |
+          # pg_dump exports all tables and data from Heroku.
+          # --no-owner and --no-privileges prevent permission-related errors during restoration.
+          # --clean and --if-exists drop existing tables in Supabase before recreating them to prevent duplicate entries.
+          pg_dump --no-owner --no-privileges --clean --if-exists "$HEROKU_URL" | psql "$SUPABASE_URL"
