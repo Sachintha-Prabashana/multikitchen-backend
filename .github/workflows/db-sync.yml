@@ -2,23 +2,21 @@ name: Nightly Database Sync (Heroku to Supabase)
 
 on:
   schedule:
-    # Runs at 12:00 AM Sri Lanka Time (UTC 18:30) every day
+    # Runs at 12:00 AM Sri Lanka Time (UTC 18:30)
     - cron: '30 18 * * *'
-  workflow_dispatch: # Allows manual triggering of the sync from the GitHub Actions tab
+  workflow_dispatch: # Manual sync button in GitHub Actions tab
 
 jobs:
   sync-database:
     runs-on: ubuntu-latest
     steps:
-      - name: Install PostgreSQL Client
+      - name: Install PostgreSQL Client 17
         run: |
-          # Add PostgreSQL official repository to get the latest version
           sudo apt-get update
           sudo apt-get install -y wget gnupg2
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
           echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
           sudo apt-get update
-          # Install PostgreSQL client version 17
           sudo apt-get install -y postgresql-client-17
 
       - name: Syncing Data...
@@ -26,7 +24,7 @@ jobs:
           HEROKU_URL: ${{ secrets.HEROKU_DATABASE_URL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
         run: |
-          # pg_dump exports all tables and data from Heroku.
-          # --no-owner and --no-privileges prevent permission-related errors during restoration.
-          # --clean and --if-exists drop existing tables in Supabase before recreating them to prevent duplicate entries.
+          # 1. pg_dump exports all tables and data from Heroku.
+          # 2. --no-owner and --no-privileges prevent permission-related errors.
+          # 3. --clean and --if-exists drop existing tables in Supabase before recreation.
           pg_dump --no-owner --no-privileges --clean --if-exists "$HEROKU_URL" | psql "$SUPABASE_URL"
